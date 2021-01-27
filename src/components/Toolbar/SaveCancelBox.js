@@ -33,19 +33,23 @@ const useStyles = makeStyles({
 })
 
 
-export default function SaveCancelBox() {
+export default function SaveCancelBox(props) {
   const classes = useStyles();
+
+  const { handleCancel, apply } = props;
   return (
     <div className="d-flex justify-content-end mt-2">
       <Button
         className={classes.cancelBtn}
         startIcon={<Icon name="cancel1" />}
+        onClick={()=>handleCancel()}
         >
         Cancel
       </Button>
       <Button
         className={classes.saveBtn}
         startIcon={<Icon name="check-circle" />}
+        onClick={() => { apply(); }}
         >
         Save
       </Button>

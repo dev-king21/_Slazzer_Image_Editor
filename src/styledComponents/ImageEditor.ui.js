@@ -484,6 +484,11 @@ const Wrapper = styled.div`
   .cropper-wrap-box,
   .cropper-canvas {
     overflow: hidden;
+
+  }
+
+  .cropper-wrap-box {
+    inset: 0
   }
   
   .cropper-drag-box {

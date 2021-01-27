@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Children, Component ,useState,useEffect} from 'react';
 import { AddWrapper, SettingsWrapper, FieldGroup, FieldCustomLabel } from '../../styledComponents/Shapes.ui';
 import { SaveCancelWrapper } from '../../styledComponents/Common.ui';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -18,16 +18,14 @@ import SaveCancelBox from './SaveCancelBox';
 import '../custom.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import MuiInputBase from '@material-ui/core/InputBase';
-// or
-// import { MuiInputBase } from '@material-ui/core';
+// import MuiInputBase from '@material-ui/core/InputBase';
 
-const InputBase = withStyles({
-  input: {
-    height: 'auto',
-    fontSize: '12px'
-  }
-})(MuiInputBase);
+// const InputBase = withStyles({
+//   input: {
+//     height: 'auto',
+//     fontSize: '12px'
+//   }
+// })(MuiInputBase);
 
 const Select = withStyles({
   root: {
@@ -89,7 +87,6 @@ const Accordion = withStyles({
     backgroundColor: '#333333',
     color: '#a1a1a1',
     boxShadow: 'none',
-    borderRadius: '5px',
     '&:not(:last-child)': {
       borderBottom: 0,
     },
@@ -98,7 +95,6 @@ const Accordion = withStyles({
     },
     '&$expanded': {
       margin: 'auto',
-      backgroundColor: '#222',
       color: 'white'
     },
   },
@@ -112,7 +108,9 @@ const AccordionSummary = withStyles({
     padding: '0 10px',
     minHeight: 0,
     '&$expanded': {
-    minHeight: 0,
+      minHeight: 0,
+      backgroundColor: '#222',
+      borderRadius: '5px 5px 0 0'
     },
   },
   content: {
@@ -134,7 +132,9 @@ const AccordionDetails = withStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     fontSize: '13px',
-    color: '#a1a1a1'
+    color: '#a1a1a1',
+    backgroundColor: '#222',
+    borderRadius: '0 0 5px 5px'
   },
 }))(MuiAccordionDetails);
 
@@ -161,9 +161,10 @@ const useStyles = makeStyles({
 
 export default function Edit(props) {
 
-  const { config } = props;
+  const { config, updateState, onRotate, correctionDegree, flipX, flipY, onCorrectionDegree,cropDetails, initialZoom, apply} = props;
+
   const {cropPresets} = config
-  // console.log("confgi : ", config);
+  
   const [expanded, setExpanded] = React.useState('');
   const [strengthVal, setStrengthVal] = React.useState(0);
   const [brightVal, setBrightVal] = React.useState(0);
@@ -181,19 +182,67 @@ export default function Edit(props) {
 
   const [restoreVal, setRestoreVal] = React.useState(0);
 
-  const handleChange = (panel) =>(event, newExpanded) => {
-     setExpanded(newExpanded ? panel : false);
-  };
-  const editOptions = EDIT_TOOLS;
+  const [acpectRatio, setAcpectRatio] = React.useState(0);
+  const [activeRatio, setActiveRatio] = React.useState('');
 
-  const classes = useStyles();
+  const handleCancel = () => {
+    setExpanded(false)
+  }
+
+  const handleChange = (panel) =>(event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+    updateState({ activeTab: panel })
+  };
+
+  //Crop Features Implementation***************************
+
+  const changeWidth = (event) => {
+      //setInputValWidth(event.target.value)
+      window.scaleflexPlugins.cropperjs.setCropBoxData({ width: +event.target.value / initialZoom / window.scaleflexPlugins.zoom });
+    }
+
+    const changeHeight = (event) => {
+      window.scaleflexPlugins.cropperjs.setCropBoxData({ height: +event.target.value / initialZoom / window.scaleflexPlugins.zoom });
+    }
+  
+    const handleSelectResolution = (event) => {
+
+      const obj = JSON.parse(event.target.value);
+
+      const { original: { width = 1, height = 1 }} = props;
+      let value;
+
+      value = obj.name === 'original size' ? width / height : obj.value;
+      window.scaleflexPlugins.cropperjs.setAspectRatio(value);
+      setAcpectRatio(obj.value)
+      setActiveRatio(obj.name)
+    }
+  //Exit Crop Features*************************************
+
+
+  //Rotate Features Implementation***************************************
+  const leftRotate = () => {
+    onRotate(-90, parseInt(correctionDegree), flipX, flipY);
+  }
+
+  const rightRotate = () => {
+    onRotate(90, parseInt(correctionDegree), flipX, flipY);
+  }
+
+  const onFlip = (val) => {
+    const nextFlipXValue = val === 'x' ? !flipX : flipX;
+    const nextFlipYValue = val === 'y' ? !flipY : flipY;
+    onRotate(0, correctionDegree, nextFlipXValue, nextFlipYValue);
+  }
 
   const handleStrengthSliderChange = (event, newValue) => {
-      // setValue(newValue);
-      setStrengthVal(newValue)
-
-      // props.onRotate(0, parseFloat(newValue), flipX, flipY);
+    setStrengthVal(newValue)
+    onCorrectionDegree(newValue)
+    onRotate(0, parseFloat(newValue), flipX, flipY);
   }
+  //Exit Rotate Features*********************************************
+
+  
 
   const handleBrightSliderChange = (event, newValue) => {
     setBrightVal(newValue)
@@ -235,6 +284,8 @@ export default function Edit(props) {
     setRestoreVal(newValue)
   }
 
+
+  
   return (
     <div className="">
       <Accordion square expanded={expanded === 'crop'} onChange={handleChange('crop')}>
@@ -243,10 +294,10 @@ export default function Edit(props) {
         </AccordionSummary>
         <AccordionDetails>
           <FormControl style={{width: '100%', marginBottom: '15px'}}>
-            <Select native variant="outlined" defaultValue="" id="grouped-native-select">
+            <Select native variant="outlined" defaultValue="" id="grouped-native-select" onChange={handleSelectResolution}>
 
               {cropPresets.map((obj, index) =>
-                <option value={index} key={index}>{obj.name}</option>
+                <option value={JSON.stringify(obj)} key={index}>{obj.name}</option>
               )}
 
             </Select>
@@ -254,6 +305,7 @@ export default function Edit(props) {
           
           <div className="d-flex">
             <TextField
+              key = {Math.round(cropDetails.width * initialZoom)+'width'}
               className="mr-3"
               id="input-number"
               label="Width(Px)"
@@ -261,18 +313,23 @@ export default function Edit(props) {
               InputLabelProps={{
                 shrink: true,
               }}
+              defaultValue={Math.round(cropDetails.width * initialZoom)}
+              onChange={changeWidth}
             />
             <TextField
+              key = {Math.round(cropDetails.height * initialZoom)+'height'}
               id="input-number"
               label="Height(Px)"
               type="number"
               InputLabelProps={{
                 shrink: true,
               }}
+              defaultValue={Math.round(cropDetails.height * initialZoom)}
+              onChange={changeHeight}
             />
           </div>
           <SaveCancelWrapper>
-            <SaveCancelBox />
+            <SaveCancelBox handleCancel={handleCancel} apply={apply}/>
           </SaveCancelWrapper>
 
         </AccordionDetails>
@@ -283,10 +340,10 @@ export default function Edit(props) {
         </AccordionSummary>
         <AccordionDetails>
           <div className="d-flex">
-            <IconButton className="pl-0"><Icon name="rotate-ccw" /></IconButton>
-            <IconButton><Icon name="rotate-cw" /></IconButton>
-            <IconButton><Icon name="swap_horizontal_circle" /></IconButton>
-            <IconButton><Icon name="swap_vertical_circle" /></IconButton>
+            <IconButton className="pl-0" onClick={leftRotate}><Icon name="rotate-ccw" /></IconButton>
+            <IconButton onClick={rightRotate}><Icon name="rotate-cw" /></IconButton>
+            <IconButton onClick={()=>onFlip('x')}><Icon name="swap_horizontal_circle" /></IconButton>
+            <IconButton onClick={()=>onFlip('y')}><Icon name="swap_vertical_circle" /></IconButton>
           </div>
           <div className="d-flex justify-content-between align-items-center mt-2">
             <span>Strength</span>
@@ -403,7 +460,7 @@ export default function Edit(props) {
           </div>
 
           <SaveCancelWrapper>
-            <SaveCancelBox />
+            <SaveCancelBox handleCancel={handleCancel} apply={apply}/>
           </SaveCancelWrapper>
 
         </AccordionDetails>
@@ -481,7 +538,7 @@ export default function Edit(props) {
           </div>
 
           <SaveCancelWrapper>
-            <SaveCancelBox />
+            <SaveCancelBox handleCancel={handleCancel} apply={apply} />
           </SaveCancelWrapper>
 
         </AccordionDetails>

@@ -21,7 +21,7 @@ export default class extends Component {
 
     return (
       <Toolbar overlayYHidden={activeTab !== 'watermark'}>
-        {!activeTab && tools.map(name => <Tool name={name} key={name} {...this.props}/>)}
+        {/* {!activeTab && tools.map(name => <Tool name={name} key={name} {...this.props}/>)}
         {activeTab === 'adjust' && <Adjust {...this.props}/>}
         {activeTab === 'effects' && <Effects {...this.props}/>}
         {activeTab === 'filters' && <Filters {...this.props}/>}
@@ -34,7 +34,7 @@ export default class extends Component {
         {activeTab === 'image' && <Image {...this.props}/>}
         {activeTab === 'text' && <Text {...this.props}/>}
         {(isShowSpinner) && <NoClickOverlay/>}
-        {activeBody !== 'preview' && <NoClickToolbar/>}
+        {activeBody !== 'preview' && <NoClickToolbar/>} */}
       </Toolbar>
     )
   }

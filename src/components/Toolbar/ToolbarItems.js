@@ -36,7 +36,6 @@ export default class extends Component {
       }
     `;
 
-
     return (
       <div className="position-relative">
         <SpanIcon onClick={() => isActiveToolbox()}>
@@ -56,9 +55,9 @@ export default class extends Component {
             {activeTab === 'focus_point' && <FocusPoint {...this.props}/>}
             {activeTab === 'shapes' && <Shapes {...this.props}/>}
             {activeTab === 'image' && <Image {...this.props}/>}
-            {activeTab === 'text' && <Text {...this.props}/>}
+            {activeTab === 'text' && <Text {...this.props}/>} */}
             {(isShowSpinner) && <NoClickOverlay/>}
-            {activeBody !== 'preview' && <NoClickToolbar />} */}
+            {activeBody !== 'preview' && <NoClickToolbar />}
           </PerfectScrollbar>
         </div>
     )

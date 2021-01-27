@@ -228,6 +228,10 @@ export default class extends Component {
     onRotate(value, correctionDegree, flipX, flipY);
   }
 
+  onCorrectionDegree = (val) => {
+    this.setState({correctionDegree: val})
+  }
+
   onFlip = (axis) => {
     const { flip } = this.state;
 
@@ -400,7 +404,8 @@ export default class extends Component {
       isShowSpinner,
       activeBody,
       config,
-      selectedTool: this.selectedTool
+      selectedTool: this.selectedTool,
+  
     };
 
     const headerProps = {
@@ -500,7 +505,18 @@ export default class extends Component {
     const toolbarItemsProps = {
       isActiveToolbox: this.isActiveToolbox,
       activeTool,
-      config
+      config,
+      activeTab,
+      updateState: this.updateState,
+      isShowSpinner,
+      activeBody,
+      onRotate: this.onRotate,
+      ...imageParams,
+      onCorrectionDegree: this.onCorrectionDegree,
+      original,
+      initialZoom,
+      cropDetails,
+      apply: this.apply
     };
 
     const footerProps = {

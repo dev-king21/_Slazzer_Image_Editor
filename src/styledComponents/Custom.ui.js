@@ -20,4 +20,8 @@ const ToolbaritemsWrapper = styled.div`
   background-color: #323232;
 `;
 
-export { WorkareaWrapper, ToolbaritemsWrapper };
+const SelectScreenWrapper = styled.div`
+  display: flex;
+`;
+
+export { WorkareaWrapper, ToolbaritemsWrapper, SelectScreenWrapper };

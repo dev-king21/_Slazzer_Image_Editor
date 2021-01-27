@@ -23,3 +23,10 @@ export const NoClickToolbar = styled('div')`
 export const SaveCancelWrapper = styled.div`
   display: block;
 `;
+
+export const LogoImgWrapper = styled.div`
+  display: flex;
+  img {
+    max-height: 40px;
+  }
+`;

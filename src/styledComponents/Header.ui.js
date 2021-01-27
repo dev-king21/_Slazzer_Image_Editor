@@ -3,14 +3,15 @@ import { Button } from './Button';
 import { getHoverColor } from './styleUtils';
 
 const HeaderWrapper = styled.div`
-  background: ${props => props.theme.colors.secondaryBg};
+  background: #323232;
 `;
 
 const HeaderTop = styled.div`
-  line-height: 35px;
-  border-bottom: 1px solid ${props => props.theme.colors.primaryBg};
-  background: ${props => props.theme.colors.primaryBg};
-  padding: 8px 0;
+  height: 50px;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Title = styled.div`
@@ -20,9 +21,7 @@ const Title = styled.div`
 `;
 
 const ButtonsWrapper = styled.div`
-  position: absolute;
-  right: 12px;
-  top: 8px;
+  diplay: flex;
 `;
 
 const CancelBtn = styled(Button)`

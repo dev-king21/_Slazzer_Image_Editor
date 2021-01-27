@@ -1,29 +1,71 @@
 import React, { Component } from 'react';
 import {
-  HeaderWrapper, HeaderTop, Title, ButtonsWrapper, ToolbarWrapper, CancelBtn, Button, CloseBtn
+  HeaderWrapper, HeaderTop, Title, ButtonsWrapper, ToolbarWrapper, CancelBtn, CloseBtn,LogoImgWrapper,SelectScreenWrapper
 } from '../../styledComponents';
 import { Toolbar } from '../';
 import { ON_CLOSE_STATUSES } from '../../config';
+import MuiButton from '@material-ui/core/Button';
+import Icon from '../icon/Icon';
+import { withStyles } from '@material-ui/core/styles';
+
+
 
 
 export default class extends Component {
+  
   render() {
     const {
       activeTab, onRevert, apply, onClose, processWithCloudService, processWithFilerobot,
       handleSave, t, config
     } = this.props;
-    const { tools, closeButtonProps, noCapitalStrs } = config;
-    const isOneTool = tools.length === 1;
-    const filteredName = activeTab === 'rotate' ? 'orientation' : activeTab;
-    const onFinishButtonLabel = (!processWithCloudService && !processWithFilerobot) ? t['toolbar.download'] : t['toolbar.save'];
     const applyAndSave = () => { apply(handleSave); };
-    const cancelBtnClosingFn = () => onClose(ON_CLOSE_STATUSES.TOOLBAR_CANCEL_BTN_CLICKED);
+
+    const Button = withStyles({
+      root: {
+        fontSize: '12px',
+        textTransform: 'capitalize',
+        fontFamily: 'Poppins',
+        padding: '5px 10px'
+      },
+      startIcon: {
+        marginRight: '4px',
+        '&>i': {
+          fontSize: '15px!important'
+        }
+      },
+      outlined: {
+        border: '1px solid #a1a1a1'
+      }
+    })(MuiButton)
 
     return (
       <HeaderWrapper>
         <HeaderTop>
-          <Title noCapitalStrs={noCapitalStrs}>{t[`toolbar.${filteredName}`] || t[`header.image_editor_title`]}</Title>
+          <LogoImgWrapper>
+            <a href="#"><img src="assets/images/white-logo.png"></img></a>
+          </LogoImgWrapper>
+          <SelectScreenWrapper>
+            Popular Format
+          </SelectScreenWrapper>
           <ButtonsWrapper>
+            <Button
+              className="text-white mr-2"
+              variant="outlined"
+              onClick={() => { }}
+              >
+              Change API Key
+            </Button> 
+            <Button
+              variant="contained"
+              className="bg-danger text-white"
+              style={{border: '1px solid #dc3545'}}
+              startIcon={<Icon name="upload" />}
+              onClick={()=>{}}
+              >
+              Upload Image
+            </Button>
+          </ButtonsWrapper>
+          {/* <ButtonsWrapper>
             <CancelBtn
               hide={!activeTab}
               onClick={isOneTool ? cancelBtnClosingFn : onRevert}
@@ -41,11 +83,8 @@ export default class extends Component {
             >
               {!activeTab || activeTab === 'resize' ? onFinishButtonLabel : t['toolbar.apply']}
             </Button>
-          </ButtonsWrapper>
-          
-          <CloseBtn onClick={onClose} title={t[`header.close_modal`]} {...closeButtonProps}>
-            {!closeButtonProps?.noLabel && (closeButtonProps?.label || t['header.close'])}
-          </CloseBtn>
+          </ButtonsWrapper> */}
+    
         </HeaderTop>
 
         {/* <ToolbarWrapper overlayYHidden={activeTab !== 'watermark'}>
