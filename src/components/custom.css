@@ -24,3 +24,21 @@
   line-height: 20px;
   height: 32px;
 }
+
+.MuiInput-underline:hover:not(.Mui-disabled):before {
+  border-bottom: none!important;
+}
+
+.MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-formControl.MuiInput-formControl {
+  margin-top: 18px!important;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* .MuiInput-underline:after {
+  content: "";
+
+} */

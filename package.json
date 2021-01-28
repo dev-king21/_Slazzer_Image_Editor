@@ -5,6 +5,8 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@quickbaseoss/babel-plugin-styled-components-css-namespace": "^1.0.1",
+    "antd": "^4.11.2",
+    "babel-plugin-import": "^1.13.3",
     "bootstrap": "^4.6.0",
     "cropperjs": "^1.5.5",
     "image-type": "^4.1.0",

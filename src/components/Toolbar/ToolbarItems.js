@@ -21,8 +21,13 @@ import Icon from '../icon/Icon';
 import styled from 'styled-components';
 
 export default class extends Component {
+
   render() {
-    const { activeTool, isActiveToolbox, isShowSpinner, activeBody, config } = this.props;
+    const { activeTool, isActiveToolbox, isShowSpinner, activeBody, config, initialZoom, cropDetails } = this.props;
+
+    // const isActiveVal = isActiveVal + 1
+
+    // console.log("isActive : ", isActiveVal)
 
     const SpanIcon = styled.span`
       position: absolute;
@@ -42,11 +47,11 @@ export default class extends Component {
           <span>
             <Icon name="circle-with-cross" />
           </span>
-        </SpanIcon> 
-       
-          <PerfectScrollbar>
-            {activeTool === 'Edit' && <Edit {...this.props}/>}
-            {/* {activeTab === 'effects' && <Effects {...this.props}/>}
+        </SpanIcon>
+
+        <PerfectScrollbar>
+          {activeTool === 'Edit' && <Edit {...this.props} />}
+          {/* {activeTab === 'effects' && <Effects {...this.props}/>}
             {activeTab === 'filters' && <Filters {...this.props}/>}
             {activeTab === 'rotate' && <Orientation {...this.props}/>}
             {activeTab === 'crop' && <Crop {...this.props}/>}
@@ -56,10 +61,10 @@ export default class extends Component {
             {activeTab === 'shapes' && <Shapes {...this.props}/>}
             {activeTab === 'image' && <Image {...this.props}/>}
             {activeTab === 'text' && <Text {...this.props}/>} */}
-            {(isShowSpinner) && <NoClickOverlay/>}
-            {activeBody !== 'preview' && <NoClickToolbar />}
-          </PerfectScrollbar>
-        </div>
+          {(isShowSpinner) && <NoClickOverlay />}
+          {activeBody !== 'preview' && <NoClickToolbar />}
+        </PerfectScrollbar>
+      </div>
     )
   }
 }

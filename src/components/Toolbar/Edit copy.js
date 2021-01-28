@@ -299,18 +299,22 @@ export default function Edit(props) {
                   id="input-number"
                   label="Width(Px)"
                   type="number"
-                  value={Math.round(cropDetails.width * initialZoom)}
-                  onChange={changeWidth}>
-                  <ExpandLessIcon />
-                </TextField>
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  defaultValue={Math.round(cropDetails.width * initialZoom)}
+                  onChange={changeWidth}
+                />
                 <TextField
                   id="input-number"
                   label="Height(Px)"
                   type="number"
-                  value={Math.round(cropDetails.height * initialZoom)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  defaultValue={Math.round(cropDetails.height * initialZoom)}
                   onChange={changeHeight}
-                />
-              </>
+                /></>
             }
           </div>
           <SaveCancelWrapper>
