@@ -10,7 +10,7 @@ const Button = withStyles({
   root: {
     textTransform: 'capitalize',
     '&:hover': {
-    
+
     }
   },
   label: {
@@ -42,17 +42,17 @@ export default function SaveCancelBox(props) {
       <Button
         className={classes.cancelBtn}
         startIcon={<Icon name="cancel1" />}
-        onClick={()=>handleCancel()}
-        >
+        onClick={() => handleCancel()}
+      >
         Cancel
       </Button>
       <Button
         className={classes.saveBtn}
         startIcon={<Icon name="check-circle" />}
         onClick={() => { apply(); }}
-        >
+      >
         Save
       </Button>
     </div>
-  )  
+  )
 }

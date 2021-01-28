@@ -3,10 +3,8 @@ import styled from 'styled-components';
 
 
 const WorkareaWrapper = styled.div`
- diplay: flex;
- justify-content: center;
- align-items: center;
- width: ${props=>props.activeToolItems ? 'calc(100% - 260px)' : '100%'};
+
+ width: ${props => props.activeToolItems ? 'calc(100% - 260px)' : '100%'};
  padding: 1rem;
  transition: 0.5s ease;
 `;

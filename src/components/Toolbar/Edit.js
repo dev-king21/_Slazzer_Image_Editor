@@ -164,33 +164,58 @@ export default function Edit(props) {
   const [acpectRatio, setAcpectRatio] = React.useState(0);
   const [activeRatio, setActiveRatio] = React.useState('');
 
-  const [cropWidth, setCropWidth] = useState(0)
+  const [inputWidth, setInputWidth] = useState(0);
+  const [inputHeight, setInputHeight] = useState(0);
 
   const [timeset, setTimeset] = useState(false)
 
   const handleCancel = () => {
     setExpanded(false)
+    updateState({ activeTab: null })
   }
+
+  useEffect(() => {
+    // if (timeset) {
+    //   setInputWidth(Math.round(cropDetails.width * initialZoom))
+    //   setInputHeight(Math.round(cropDetails.height * initialZoom))
+
+    //   console.log("welcome")
+    // }
+
+  }, [timeset])
+
+  // useEffect(() => {
+  //   if (window.scaleflexPlugins && window.scaleflexPlugins.cropperjs)
+  //     changeRegion();
+  // }, [inputWidth, inputHeight])
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
     updateState({ activeTab: panel })
+
     if (panel === 'crop')
-      setTimeout(() => { setTimeset(true) }, 10);
+      setTimeout(() => {
+        setTimeset(true)
+      }, 1000);
   };
+
 
   //Crop Features Implementation***************************
 
-  const changeWidth = (event) => {
-    // setCropWidth(Math.round(cropDetails.width * initialZoom))
-    // event.target.value = Math.round(cropDetails.width * initialZoom)
-    console.log(event.target.value)
-    window.scaleflexPlugins.cropperjs.setCropBoxData({ width: +event.target.value / initialZoom / window.scaleflexPlugins.zoom });
+  const changeRegion = () => {
+    window.scaleflexPlugins.cropperjs.setCropBoxData({ width: inputWidth / initialZoom / window.scaleflexPlugins.zoom, height: inputHeight / initialZoom / window.scaleflexPlugins.zoom });
+  }
+
+  const changeWidth = (inc) => {
+    var ch_width = parseInt(document.getElementById('input-width').value);
+    if (inc) ch_width++; else ch_width--;
+    console.log(ch_width, cropDetails.width);
+    window.scaleflexPlugins.cropperjs.setCropBoxData({ width: ch_width / initialZoom / window.scaleflexPlugins.zoom });
   }
 
   const changeHeight = (event) => {
-
-    window.scaleflexPlugins.cropperjs.setCropBoxData({ height: +event.target.value / initialZoom / window.scaleflexPlugins.zoom });
+    console.log("change height")
+    window.scaleflexPlugins.cropperjs.setCropBoxData({ height: event.target.value / initialZoom / window.scaleflexPlugins.zoom });
   }
   const handleSelectResolution = (event) => {
 
@@ -272,7 +297,6 @@ export default function Edit(props) {
   }
 
 
-
   return (
     <div className="">
       <Accordion square expanded={expanded === 'crop'} onChange={handleChange('crop')}>
@@ -291,27 +315,38 @@ export default function Edit(props) {
           </FormControl>
 
           <div className="d-flex">
-            {timeset &&
+            <div className="position-relative mr-3">
 
-              <>
-                <TextField
-                  className="mr-3"
-                  id="input-number"
-                  label="Width(Px)"
-                  type="number"
-                  value={Math.round(cropDetails.width * initialZoom)}
-                  onChange={changeWidth}>
-                  <ExpandLessIcon />
-                </TextField>
-                <TextField
-                  id="input-number"
-                  label="Height(Px)"
-                  type="number"
-                  value={Math.round(cropDetails.height * initialZoom)}
-                  onChange={changeHeight}
-                />
-              </>
-            }
+              <TextField
+                id="input-width"
+                label="Width(Px)"
+                type="text"
+                value={Math.round(cropDetails.width * initialZoom)}
+              />
+              <div className="icon-width-box">
+                <IconButton className="position-absolute up-icon"
+                  onClick={() => changeWidth(true)} >
+                  <img src="assets/images/select-dropdown.png"></img>
+                </IconButton>
+                <IconButton className="position-absolute down-icon"
+                  onClick={() => { changeWidth(false) }}>
+                  <img src="assets/images/select-dropdown.png"></img>
+                </IconButton>
+              </div>
+            </div>
+            <div className="position-relative">
+              <TextField
+                id="input-height"
+                label="Height(Px)"
+                type="number"
+                value={Math.round(cropDetails.height * initialZoom)}
+                onChange={changeHeight}
+              />
+              <div className="icon-height-box">
+                <IconButton className="position-absolute up-icon" onClick={() => { setInputHeight(inputHeight + 1); console.log("height: ", inputHeight) }}> <img src="assets/images/select-dropdown.png"></img></IconButton>
+                <IconButton className="position-absolute down-icon" onClick={() => { setInputHeight(inputHeight - 1) }}><img src="assets/images/select-dropdown.png"></img></IconButton>
+              </div>
+            </div>
           </div>
           <SaveCancelWrapper>
             <SaveCancelBox handleCancel={handleCancel} apply={apply} />

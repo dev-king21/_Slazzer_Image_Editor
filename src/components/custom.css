@@ -6,13 +6,13 @@
   padding: 6px 25px 7px 10px !important;
 }
 
-#input-number-label {
+#input-width-label, #input-height-label {
   color: #a1a1a1;
   font-size: 16px;
   font-family: "Poppins";
 }
 
-#input-number {
+#input-width, #input-height {
   color: #a1a1a1;
   font-size: 12px;
   font-family: "Poppins";
@@ -39,6 +39,37 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 /* .MuiInput-underline:after {
+  background-image: url('/assets/images/select-dropdown.png');
   content: "";
-
 } */
+
+.up-icon {
+  right: 6px;
+  top: 23px;
+  transform: rotate(180deg)!important;
+  padding: 3px!important;
+  border-radius: inherit!important;
+  background-color: white!important;
+  cursor: row-resize!important;
+}
+
+.icon-width-box, .icon-height-box {
+  opacity: 0;
+}
+
+.icon-width-box:hover {
+  opacity: 1;
+}
+
+.icon-height-box:hover {
+  opacity: 1;
+}
+
+.down-icon {
+  right: 6px;
+  top: 34px;
+  padding: 3px!important;
+  border-radius: inherit!important;
+  background-color: white!important;
+  cursor: row-resize!important;
+}
